@@ -1,0 +1,12 @@
+{
+  "call_type": "question",
+  "language": "en",
+  "confidence": 0.95,
+  "caller": {"name": "Nadia Petrov", "phone": "+1 555 0189", "email": "nadia.petrov@example.com"},
+  "reservation_ref": null,
+  "booking": null,
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Caller asks about parking and check-in time, both answered in the property FAQ."
+}

@@ -1,0 +1,23 @@
+# Scheduling {{SLUG}} on a Linux server (2 of 2: the timer).
+#
+# sudo cp systemd.example.timer /etc/systemd/system/{{SLUG}}.timer
+# sudo systemctl daemon-reload
+# sudo systemctl enable --now {{SLUG}}.timer
+# systemctl list-timers | grep {{SLUG}}
+
+[Unit]
+Description=Run {{SLUG}} every 15 minutes
+
+[Timer]
+OnCalendar=*:0/15
+
+# Catch up after a reboot or a maintenance window instead of skipping.
+Persistent=true
+
+# Stagger the start so several agents on one box do not all wake together.
+RandomizedDelaySec=60
+
+Unit={{SLUG}}.service
+
+[Install]
+WantedBy=timers.target

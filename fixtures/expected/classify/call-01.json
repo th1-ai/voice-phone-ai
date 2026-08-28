@@ -1,0 +1,15 @@
+{
+  "call_type": "room_booking",
+  "language": "en",
+  "confidence": 0.95,
+  "caller": {"name": "Priya Shah", "phone": "+1 555 0101", "email": "priya.shah@example.com"},
+  "reservation_ref": null,
+  "booking": {"room_type": "sea-view", "checkin": "2026-09-19", "checkout": "2026-09-21",
+             "guests": 2, "date": null, "time": null, "party_size": null,
+             "dietary_notes": null, "special_requests": null, "room_number": null,
+             "items": [], "notes": null},
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Caller asks about a sea view room for two nights, two guests."
+}

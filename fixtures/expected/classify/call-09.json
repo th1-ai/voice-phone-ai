@@ -1,0 +1,12 @@
+{
+  "call_type": "guest_request",
+  "language": "en",
+  "confidence": 0.93,
+  "caller": {"name": "Laura Bennett", "phone": "+1 555 0167", "email": "laura.bennett@example.com"},
+  "reservation_ref": null,
+  "booking": null,
+  "guest_request": {"category": "transport", "details": "Late checkout and an airport transfer, flight at 21:40 tomorrow evening.", "room_number": "305"},
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Room 305 needs a late checkout and an airport transfer arranged."
+}

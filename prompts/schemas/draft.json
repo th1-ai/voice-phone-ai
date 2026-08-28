@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "subject": { "type": "string", "maxLength": 200 },
+    "body": { "type": "string", "minLength": 1 },
+    "needs_human": { "type": "boolean" },
+    "ai_suggested_reply": { "type": ["string", "null"] }
+  },
+  "required": ["subject", "body", "needs_human"],
+  "additionalProperties": false
+}

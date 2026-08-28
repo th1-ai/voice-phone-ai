@@ -1,0 +1,6 @@
+{
+  "subject": "Your room service order",
+  "body": "Hi Hannah,\n\nThanks for calling room service. We are sending up a Club Sandwich and two Sparkling Waters to room 214, EUR 40 plus an EUR 8 tray charge, EUR 48 total. It should be with you in about 35 minutes.",
+  "needs_human": false,
+  "ai_suggested_reply": null
+}

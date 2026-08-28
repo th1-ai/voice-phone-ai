@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------------------
+# hotel.yaml - who you are, what you are connected to, and how careful to be.
+#
+# `make setup` copies this file to config/hotel.yaml. Edit THAT one; this
+# example stays as a clean reference you can always come back to.
+#
+# Every agent in this family reads the same file, so once you have filled it in
+# for one agent you can copy it into the next.
+#
+# Any value can pull from the environment with ${VAR} or ${VAR:-default}, which
+# is how secrets stay in .env and out of this file.
+# ---------------------------------------------------------------------------
+
+hotel:
+  name: "Hotel Aurora"                  # how the agent refers to you with guests
+  legal_name: "Aurora Hospitality Lda"  # for invoices and formal documents
+  timezone: "Europe/Lisbon"             # IANA name; drives every "today" and schedule
+  currency: "EUR"
+  languages: [en, pt, es]               # first one is the default when undetectable
+  rooms: 42
+  address: "1 Example Street, 1000-001 Lisbon, Portugal"
+  website: "https://example.com"
+  phone: "+351 200 000 000"
+  email: "reservations@example.com"
+
+# Who hears about it when the agent needs a person.
+contacts:
+  manager:
+    name: "Duty manager"
+    email: "manager@example.com"
+    whatsapp: ""                        # leave blank if you do not use chat alerts
+  escalation_email: "manager@example.com"
+
+# Which connector to use for each system. `make doctor` tells you whether each
+# one is actually working. See docs/integrations.md for what every option needs.
+systems:
+  pms:
+    adapter: mock                       # mock | csv | cloudbeds | cli
+    # csv:       reads exports from data/imports/ - works with ANY pms
+    # cloudbeds: live API; needs the CLOUDBEDS_* variables in .env
+    # cli:       bridges to a JSON command line tool (advanced)
+    #   command: mews-cli
+    #   profile: mews
+
+  email:
+    adapter: mock                       # mock | imap | gmail
+    mailbox: "reservations@example.com"
+    signature_file: knowledge/signature.md
+    # fixtures_dir: data/my-test-calls  # mock only - test your own sample
+    #   call transcripts without touching fixtures/inbound/, see
+    #   docs/integrations.md "Call transcript source"
+
+  messaging:
+    adapter: mock                       # mock | unipile | webhook
+    # unipile: your own UniPile account and your own WhatsApp number
+    # webhook: POST to Zapier / Make / n8n and let that deliver the message
+    staff_chat_id: ""
+
+  sheets:
+    adapter: csv                        # csv | google
+    # csv:    writes to data/exports/*.csv - opens in Excel or Sheets
+    # google: live shared spreadsheet; set spreadsheet_id below
+    # spreadsheet_id: "1AbC..."
+
+# The global kill switch.
+#   shadow - the agent reads, thinks, drafts and queues. It never sends and
+#            never writes to your PMS. Start here. Always.
+#   live   - approved items are really sent.
+# config/agent.yaml may be stricter than this, never looser.
+mode: shadow
+
+# How the agent thinks.
+llm:
+  provider: interactive     # mock | interactive | claude-code | anthropic
+  # mock        canned answers from fixtures. Used by `make demo` and the tests.
+  # interactive parks each prompt in data/pending for your own Claude Code
+  #             session to answer. No extra cost, and you see the reasoning.
+  # claude-code shells out to the `claude` CLI on your own Claude Code login.
+  #             Good for a Mac or a small box on a schedule.
+  # anthropic   the Anthropic API with your own key. Best for volume.
+  model: claude-opus-5      # never pin a dated id here; this alias stays current
+  effort: medium            # low | medium | high - how hard the model thinks
+  max_tokens: 4000
+
+# What needs a human before it leaves the building.
+review:
+  require_approval_for:
+    - send_email
+    - send_message
+    - pms_write
+    - payment
+    - publish
+  auto_approve_after_days: null   # null = never auto-approve. Leave it null.
+  digest_hour: 8                  # local hour for the "waiting for you" digest
+
+privacy:
+  redact_cards: true        # card numbers are masked on the way in. Always on.
+  retention_days: 365       # how long processed items stay in data/agent.db

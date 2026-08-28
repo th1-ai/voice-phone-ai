@@ -1,0 +1,11 @@
+{
+  "id": "call-12",
+  "thread_id": "call-12",
+  "from": "voicemail@phonesystem.example.com",
+  "from_name": "Hotel Aurora Voicemail",
+  "to": ["reservations@example.com"],
+  "subject": "Voicemail transcript - 0:04 - caller withheld",
+  "body": "[silence, then a dial tone] Hello? ... [call ends]",
+  "received_at": "2026-09-08T22:47:00+00:00",
+  "folder": "INBOX"
+}

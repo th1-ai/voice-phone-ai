@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Scheduling {{SLUG}} on a Mac.
+
+  launchd is better than cron on a laptop: it catches up after the machine
+  wakes instead of silently skipping the run.
+
+  1. Replace {{REPO_PATH}} with the output of `pwd` in this folder.
+  2. Save as ~/Library/LaunchAgents/ai.th1.{{SLUG}}.plist
+  3. launchctl load ~/Library/LaunchAgents/ai.th1.{{SLUG}}.plist
+  4. launchctl list | grep {{SLUG}}
+  To stop:  launchctl unload ~/Library/LaunchAgents/ai.th1.{{SLUG}}.plist
+
+  `make schedule ARGS="--target launchd"` prints this with the paths filled in.
+-->
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>ai.th1.{{SLUG}}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>-c</string>
+      <string>cd {{REPO_PATH}} &amp;&amp; {{REPO_PATH}}/.venv/bin/python tools/run.py --once</string>
+    </array>
+
+    <!-- Every 15 minutes. Use StartCalendarInterval instead for a fixed time. -->
+    <key>StartInterval</key>
+    <integer>900</integer>
+
+    <key>WorkingDirectory</key>
+    <string>{{REPO_PATH}}</string>
+
+    <key>StandardOutPath</key>
+    <string>{{REPO_PATH}}/data/logs/launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>{{REPO_PATH}}/data/logs/launchd.err</string>
+
+    <!-- Do not fire immediately on load: run it by hand first. -->
+    <key>RunAtLoad</key>
+    <false/>
+  </dict>
+</plist>

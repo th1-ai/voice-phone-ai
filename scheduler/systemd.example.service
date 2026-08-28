@@ -1,0 +1,34 @@
+# Scheduling {{SLUG}} on a Linux server (1 of 2: the service).
+#
+# 1. Replace {{REPO_PATH}} with the repo path and {{RUN_USER}} with the user
+#    that owns it. Never root.
+# 2. sudo cp systemd.example.service /etc/systemd/system/{{SLUG}}.service
+# 3. sudo cp systemd.example.timer   /etc/systemd/system/{{SLUG}}.timer
+# 4. sudo systemctl daemon-reload && sudo systemctl enable --now {{SLUG}}.timer
+#
+# Watch it:  journalctl -u {{SLUG}}.service -f
+# Run once:  sudo systemctl start {{SLUG}}.service
+
+[Unit]
+Description={{SLUG}} - one pass of the agent loop
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User={{RUN_USER}}
+WorkingDirectory={{REPO_PATH}}
+ExecStart={{REPO_PATH}}/.venv/bin/python tools/run.py --once
+
+# The agent only ever writes inside its own data/ folder.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths={{REPO_PATH}}/data
+PrivateTmp=true
+
+# Do not let a stuck run pile up.
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target

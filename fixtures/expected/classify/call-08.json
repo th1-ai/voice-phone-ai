@@ -1,0 +1,16 @@
+{
+  "call_type": "room_service",
+  "language": "en",
+  "confidence": 0.9,
+  "caller": {"name": "Ben Carter", "phone": null, "email": "ben.carter@example.com"},
+  "reservation_ref": null,
+  "booking": {"room_type": null, "checkin": null, "checkout": null, "guests": null,
+             "date": null, "time": null, "party_size": null, "dietary_notes": null,
+             "special_requests": null, "room_number": "118",
+             "items": [{"name": "chicken wings", "qty": 1}, {"name": "Cheeseburger", "qty": 1}],
+             "notes": null},
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Room 118 orders chicken wings and a cheeseburger."
+}

@@ -1,0 +1,6 @@
+{
+  "subject": "Your room service order",
+  "body": "Hi Ben,\n\nThanks for calling. We can send up a Cheeseburger to room 118 right away, but chicken wings are not on our room service menu at the moment - would a Caesar Salad or the Grilled Sea Bass work instead? Let us know and we will get it sent up.",
+  "needs_human": true,
+  "ai_suggested_reply": null
+}

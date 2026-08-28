@@ -1,0 +1,82 @@
+[
+  {
+    "id": "res-ext-01",
+    "external_ref": "RES-8001",
+    "status": "confirmed",
+    "check_in": "2026-09-12",
+    "check_out": "2026-09-15",
+    "room_type_id": "house-suite",
+    "room_type_name": "Hotel Aurora Suite",
+    "adults": 2,
+    "children": 0,
+    "source": "booking_com",
+    "total": 1440,
+    "balance": 0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-01", "first_name": "Marta", "last_name": "Nowak",
+      "email": "marta.nowak@example.com", "phone": "+1 555 0142",
+      "country": "PL", "language": ""
+    }
+  },
+  {
+    "id": "res-ext-02",
+    "external_ref": "RES-8002",
+    "status": "confirmed",
+    "check_in": "2026-09-10",
+    "check_out": "2026-09-16",
+    "room_type_id": "house-suite",
+    "room_type_name": "Hotel Aurora Suite",
+    "adults": 3,
+    "children": 1,
+    "source": "direct_widget",
+    "total": 2880,
+    "balance": 500,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-02", "first_name": "Julien", "last_name": "Marchand",
+      "email": "julien.marchand@example.com", "phone": "+1 555 0156",
+      "country": "FR", "language": "fr"
+    }
+  },
+  {
+    "id": "res-ext-03",
+    "external_ref": "RES-8003",
+    "status": "confirmed",
+    "check_in": "2026-09-13",
+    "check_out": "2026-09-14",
+    "room_type_id": "house-suite",
+    "room_type_name": "Hotel Aurora Suite",
+    "adults": 2,
+    "children": 0,
+    "source": "expedia",
+    "total": 480,
+    "balance": 0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-03", "first_name": "Alessia", "last_name": "Conti",
+      "email": "alessia.conti@example.com", "phone": "+1 555 0167",
+      "country": "IT", "language": "it"
+    }
+  },
+  {
+    "id": "res-ext-04",
+    "external_ref": "RES-8004",
+    "status": "confirmed",
+    "check_in": "2026-09-19",
+    "check_out": "2026-09-21",
+    "room_type_id": "classic",
+    "room_type_name": "Classic Room",
+    "adults": 2,
+    "children": 0,
+    "source": "booking_com",
+    "total": 350,
+    "balance": 0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-04", "first_name": "Sofia", "last_name": "Reyes",
+      "email": "sofia.reyes@example.com", "phone": "+1 555 0178",
+      "country": "ES", "language": "es"
+    }
+  }
+]

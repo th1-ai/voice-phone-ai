@@ -1,0 +1,12 @@
+{
+  "call_type": "no_action",
+  "language": "en",
+  "confidence": 0.9,
+  "caller": {"name": null, "phone": null, "email": null},
+  "reservation_ref": null,
+  "booking": null,
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Silence and a dial tone - no message was left."
+}

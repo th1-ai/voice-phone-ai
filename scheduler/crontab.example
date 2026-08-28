@@ -1,0 +1,32 @@
+# {{SLUG}} below = this agent's folder name - `make schedule ARGS="--all"` prints
+# ready-made lines with everything already substituted; prefer that.
+# Scheduling {{SLUG}} with cron (Linux, and macOS if the machine stays awake).
+#
+# Install:  crontab -e     then paste the lines you want.
+# Check:    crontab -l
+# Logs:     tail -f {{REPO_PATH}}/data/logs/cron.log
+#
+# This file only ever shows the ONE main loop as an example. If
+# config/agent.yaml has a `schedule:` block (most agents in this family do -
+# check yours), it lists every recurring job this agent actually needs, each
+# with its own real command and cadence - print all of them, already filled
+# in with the right absolute paths for THIS machine, with:
+#
+#     make schedule ARGS="--all"
+#
+# Paste that output into crontab -e instead of hand-editing the line below.
+# `make schedule` on its own (or with --command/--cadence) generates one
+# snippet for any single command you name:
+#
+#     make schedule ARGS="--cadence every-15-min"
+#     make schedule ARGS="--command 'tools/run.py --once' --cadence every-5-min"
+#
+# cron starts with almost no environment, so both paths below MUST be absolute.
+# Replace {{REPO_PATH}} with the output of `pwd` in this folder.
+
+# Main loop, every 15 minutes - change the cadence to match what README.md
+# and config/agent.yaml actually document for this agent.
+*/15 * * * * cd {{REPO_PATH}} && {{REPO_PATH}}/.venv/bin/python tools/run.py --once >> {{REPO_PATH}}/data/logs/cron.log 2>&1
+
+# Start in shadow mode. Only add a schedule after you have watched a few real
+# passes by hand and worked the review queue.

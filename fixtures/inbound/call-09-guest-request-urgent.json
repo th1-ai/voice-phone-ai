@@ -1,0 +1,11 @@
+{
+  "id": "call-09",
+  "thread_id": "call-09",
+  "from": "voicemail@phonesystem.example.com",
+  "from_name": "Hotel Aurora Voicemail",
+  "to": ["reservations@example.com"],
+  "subject": "Voicemail transcript - 0:31 - caller room 305",
+  "body": "Hi, this is room three-oh-five, Laura Bennett. I need a late checkout and an airport transfer arranged, my flight is at nine forty tomorrow evening. Please call me back on plus one five five five zero one six seven or email laura.bennett@example.com. Thanks so much.",
+  "received_at": "2026-09-07T08:40:00+00:00",
+  "folder": "INBOX"
+}

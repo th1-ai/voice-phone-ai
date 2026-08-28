@@ -1,0 +1,12 @@
+{
+  "call_type": "guest_request",
+  "language": "en",
+  "confidence": 0.9,
+  "caller": {"name": "Robert Klein", "phone": "+1 555 0178", "email": null},
+  "reservation_ref": null,
+  "booking": null,
+  "guest_request": {"category": "maintenance", "details": "Air conditioning has not worked all night in room 402.", "room_number": "402"},
+  "missing_info": [],
+  "escalation": {"category": "complaint", "reason": "Caller is very unhappy about a broken AC unit and wants an immediate callback."},
+  "reason": "An upset guest reports the AC has been broken all night and wants a callback."
+}

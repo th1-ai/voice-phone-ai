@@ -1,0 +1,15 @@
+{
+  "call_type": "room_booking",
+  "language": "en",
+  "confidence": 0.9,
+  "caller": {"name": "Grace Kim", "phone": "+1 555 0123", "email": "grace.kim@example.com"},
+  "reservation_ref": null,
+  "booking": {"room_type": "classic", "checkin": "2026-10-02", "checkout": "2026-10-05",
+             "guests": 7, "date": null, "time": null, "party_size": null,
+             "dietary_notes": null, "special_requests": null, "room_number": null,
+             "items": [], "notes": null},
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "A family reunion of seven wants a Classic Room for three nights."
+}

@@ -1,0 +1,15 @@
+{
+  "call_type": "table_booking",
+  "language": "en",
+  "confidence": 0.95,
+  "caller": {"name": "Marco Bianchi", "phone": "+1 555 0134", "email": "marco.bianchi@example.com"},
+  "reservation_ref": null,
+  "booking": {"room_type": null, "checkin": null, "checkout": null, "guests": null,
+             "date": "2026-09-15", "time": "20:00", "party_size": 2,
+             "dietary_notes": null, "special_requests": null, "room_number": null,
+             "items": [], "notes": null},
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "Caller wants a table for two at 20:00 on 15 September."
+}

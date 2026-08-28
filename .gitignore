@@ -1,0 +1,44 @@
+# Secrets - never commit these
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+service_account.json
+*.pem
+*.key
+
+# Runtime state (the agent's database, logs, exports, parked prompts)
+data/
+.tmp/
+*.db
+*.db-wal
+*.db-shm
+
+# Your filled-in config. The .example.yaml files ARE committed.
+config/hotel.yaml
+config/agent.yaml
+
+# Your property knowledge may contain guest or staff details.
+knowledge/*.md
+!knowledge/*.example.md
+!knowledge/README.md
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# internal QA transcript from the template factory - never part of the template
+SIMULATION.md

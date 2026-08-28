@@ -1,0 +1,162 @@
+# ---------------------------------------------------------------------------
+# agent.yaml - Voice / Phone AI's own knobs. `make setup` copies this to
+# config/agent.yaml; edit that copy, this example stays as a clean reference.
+#
+# Voice / Phone AI reads finished call transcripts (voicemail-to-text, a
+# call-recording transcript, or a note a staff member typed up), works out
+# what the caller needed, and drafts a callback - a room quote, a table
+# confirmation, a room-service total, or a concierge note. It never books,
+# orders or replies on its own: every write and every send still goes
+# through mode: shadow / review.require_approval_for in config/hotel.yaml -
+# nothing here loosens that. See docs/safety.md and docs/how-it-works.md.
+# ---------------------------------------------------------------------------
+
+# --- Which systems this agent actually READS through core/adapters ---------
+# Voice / Phone AI reads call transcripts from the mailbox (email) and reads
+# reservations for a genuine availability check (pms, `list_reservations` in
+# tools/booking.py). It never READS messaging: `systems.messaging` is used
+# only to send - a caller's callback when they left a phone number but no
+# email, and the urgent staff alert (docs/integrations.md "Messaging"). So
+# messaging is left out here on purpose: a property that only ever gets
+# callbacks by email keeps `systems.messaging.adapter: mock` forever and must
+# not be warned that its items are shipped sample data. Listing email/pms
+# still warns you correctly if THOSE are left on mock once you run for real.
+systems_used: [pms, email]
+
+# Below this, a call always needs a human instead of being drafted on trust.
+confidence_threshold: 0.75
+
+# Categories the classify step may return in its `escalation` block. Anything
+# outside this enum fails schema validation and the call queues as
+# needs_human rather than guessing at a category. `urgent_transfer` is the
+# stand-in for "route this call to a human" - there is no real transfer tool
+# without a telephony provider, see docs/how-it-works.md design decision 5.
+escalation_categories:
+  - complaint
+  - safety
+  - payment
+  - policy_exception
+  - missing_info
+  - vip
+  - urgent_transfer
+
+# Voice / Phone AI never auto-sends and never auto-books - see
+# docs/how-it-works.md design decision 4. This documents the fact for
+# docs/benefits.md and tools/report.py; the real gate is mode +
+# review.require_approval_for in config/hotel.yaml, enforced by core/review.py.
+autonomy: draft
+
+# --- Rooms -------------------------------------------------------------
+# Rates are computed, never asked of the model: nightly_rate =
+# round(base_rate x season[month] x weekend_multiplier / 5) x 5 - see
+# tools/pricing.py. Availability is genuine: tools/booking.py counts real
+# overlapping confirmed reservations from your PMS (systems.pms.adapter),
+# plus anything this agent has already captured this run, against `count`
+# below - see docs/how-it-works.md design decision 6.
+rooms:
+  room_types:
+    classic:      { name: "Classic Room",       base_rate: 165, max_occupancy: 2, count: 20 }
+    sea-view:     { name: "Sea View Room",       base_rate: 230, max_occupancy: 2, count: 12 }
+    junior-suite: { name: "Junior Suite",        base_rate: 320, max_occupancy: 3, count: 8 }
+    house-suite:  { name: "Hotel Aurora Suite",  base_rate: 480, max_occupancy: 4, count: 3 }
+  # one multiplier per month, January first.
+  season_multiplier: [0.85, 0.85, 0.90, 1.00, 1.10, 1.25, 1.35, 1.35, 1.15, 1.00, 0.90, 0.95]
+  weekend_multiplier: 1.08     # Friday and Saturday nights
+  weekend_days: [4, 5]         # Monday=0 ... Sunday=6
+  large_group_pax: 6           # 6+ guests in one room always needs a human
+
+# --- Restaurant ----------------------------------------------------------
+# Table availability is a venue-wide cover cap within a rolling seating
+# window - tools/store_ext.py:count_table_covers_in_window - the same shape
+# the source spec documents. See docs/how-it-works.md design decision 10.
+restaurant:
+  name: "The Aurora Kitchen"
+  closed_weekdays: [0]          # Monday=0 ... Sunday=6
+  service_start: "19:00"
+  service_end: "22:30"
+  default_time: "19:30"
+  cover_cap: 40                 # covers allowed inside any one seating window
+  seating_window_minutes: 90
+  large_party_size: 7           # 7+ always gets a human callback, never an
+                                 # automatic yes - matches the source spec
+
+# --- Room service ----------------------------------------------------------
+# tools/pricing.py:match_menu_item fuzzy-matches a caller's words the same
+# way tools/pricing.py matches a room type: exact title, then a substring,
+# then the keyword hints. Quantities are supported - see docs/how-it-works.md
+# design decision 7.
+room_service:
+  hours_start: "07:00"
+  hours_end: "22:00"
+  tray_charge: 8
+  estimated_delivery_minutes: 35
+  menu:
+    - id: club-sandwich
+      title: "Club Sandwich"
+      price: 28
+      hints: ["club", "sandwich"]
+    - id: cheeseburger
+      title: "Cheeseburger"
+      price: 32
+      hints: ["burger"]
+    - id: caesar-salad
+      title: "Caesar Salad"
+      price: 24
+      hints: ["caesar", "salad"]
+    - id: grilled-sea-bass
+      title: "Grilled Sea Bass"
+      price: 42
+      hints: ["sea bass", "fish"]
+    - id: margherita-pizza
+      title: "Margherita Pizza"
+      price: 22
+      hints: ["pizza"]
+    - id: chocolate-fondant
+      title: "Chocolate Fondant"
+      price: 16
+      hints: ["fondant", "chocolate", "dessert"]
+    - id: fruit-plate
+      title: "Fresh Fruit Plate"
+      price: 14
+      hints: ["fruit"]
+    - id: continental-breakfast
+      title: "Continental Breakfast"
+      price: 24
+      hints: ["breakfast", "continental"]
+    - id: house-wine
+      title: "House Wine (bottle)"
+      price: 38
+      hints: ["wine"]
+    - id: sparkling-water
+      title: "Sparkling Water"
+      price: 6
+      hints: ["sparkling water", "still water", "water"]
+    - id: espresso
+      title: "Espresso"
+      price: 6
+      hints: ["espresso", "coffee"]
+
+# --- Guest requests ----------------------------------------------------------
+# Anything that is not a room, table or room-service booking - a taxi, a
+# maintenance issue, a special errand - is logged as a guest_request.
+# `categories` is the enum tools/engine.py offers the classify step
+# (settings.agent_get("guest_requests.categories", ...)); `urgent_categories`
+# is checked at preview time (tools/booking.py:preview_guest_request) to flag
+# the item for an immediate staff alert via systems.messaging once it is
+# approved and sent - see docs/how-it-works.md design decision 5 and
+# docs/integrations.md "Messaging". The values below are the code's own
+# fallback, so leaving this block untouched changes nothing; edit it to
+# change what the classifier offers or what pages staff immediately.
+guest_requests:
+  categories: [transport, housekeeping, maintenance, concierge, dining, other]
+  urgent_categories: [transport, safety]
+
+# --- Schedule ------------------------------------------------------------
+# `make schedule ARGS="--all"` prints one ready-to-paste snippet per entry
+# below, with the exact command and cadence already filled in - that is what
+# scheduler/crontab.example and README "What runs when" / "Scheduling" show.
+# Each entry names a real command in this repo, never a made-up one.
+schedule:
+  calls:
+    command: "tools/run.py --once"
+    cadence: every-10-min      # workflows/10-calls.md - call transcripts, every 10 minutes

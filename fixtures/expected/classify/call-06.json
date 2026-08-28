@@ -1,0 +1,15 @@
+{
+  "call_type": "table_booking",
+  "language": "en",
+  "confidence": 0.94,
+  "caller": {"name": "Tom Walsh", "phone": "+1 555 0156", "email": "tom.walsh@example.com"},
+  "reservation_ref": null,
+  "booking": {"room_type": null, "checkin": null, "checkout": null, "guests": null,
+             "date": "2026-09-16", "time": "20:00", "party_size": 8,
+             "dietary_notes": null, "special_requests": null, "room_number": null,
+             "items": [], "notes": null},
+  "guest_request": null,
+  "missing_info": [],
+  "escalation": null,
+  "reason": "A group of eight wants a table on 16 September at 20:00."
+}

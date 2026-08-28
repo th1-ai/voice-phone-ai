@@ -1,0 +1,23 @@
+# Runtime dependencies. Deliberately tiny: the agent runs on a stock Python 3.11+
+# with one library. Everything else is the standard library.
+
+pyyaml>=6.0,<7            # reads config/*.yaml
+
+# --- LLM providers -------------------------------------------------------
+# Only needed when llm.provider is `anthropic`. The `mock`, `interactive` and
+# `claude-code` providers need nothing installed.
+anthropic>=0.40,<1
+
+# --- Tests ---------------------------------------------------------------
+pytest>=8.0,<9
+
+# --- Optional, per adapter -----------------------------------------------
+# Uncomment the block for the adapters you actually turn on.
+#
+# Gmail (systems.email.adapter: gmail) and Google Sheets (systems.sheets.adapter: google):
+# google-api-python-client>=2.100
+# google-auth>=2.30
+# google-auth-oauthlib>=1.2
+#
+# Nothing else needs a library: IMAP/SMTP, CSV, UniPile and webhooks all use
+# the standard library.
